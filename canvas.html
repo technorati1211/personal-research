@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Bubble Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script defer="" data-domain="business-canvas.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script>
+  <script type="text/javascript" src="https://tiiny.host/ad-script.js"></script>
+</head>
+<body>
+  <canvas id="bubbleChart" width="800" height="600"></canvas>
+
+  <script>
+    // Function to generate random values for the bubbles
+    function getRandomRevenue() {
+      return Math.floor(Math.random() * 100000) + 10000; // Random revenue between $10,000 and $100,000
+    }
+
+    // Function to generate random competition intensity (1 = Low, 2 = Medium, 3 = High)
+    function getRandomCompetition() {
+      return Math.floor(Math.random() * 3) + 1; // Random value between 1 and 3
+    }
+
+    // Function to map competition level to color
+    function getCompetitionColor(level) {
+      switch (level) {
+        case 1: return 'rgba(255, 255, 0, 0.5)';  // Yellow for low competition
+        case 2: return 'rgba(255, 165, 0, 0.5)';  // Orange for medium competition
+        case 3: return 'rgba(255, 0, 0, 0.5)';    // Red for high competition
+        default: return 'rgba(255, 99, 132, 0.5)';
+      }
+    }
+
+    const ctx = document.getElementById('bubbleChart').getContext('2d');
+
+    const data = {
+      datasets: [
+        {
+          label: 'Professionals',
+          data: [
+            { x: 1, y: 1, r: getRandomRevenue() / 1000, label: 'Mortgage Brokers', competition: getRandomCompetition() },
+            { x: 1, y: 2, r: getRandomRevenue() / 1000, label: 'Lawyers', competition: getRandomCompetition() },
+            { x: 1, y: 3, r: getRandomRevenue() / 1000, label: 'Financial Advisors', competition: getRandomCompetition() }
+          ],
+          backgroundColor: function(context) {
+            return getCompetitionColor(context.raw.competition);
+          }
+        },
+        {
+          label: 'Healthcare',
+          data: [
+            { x: 3, y: 1, r: getRandomRevenue() / 1000, label: 'Dental Clinics', competition: getRandomCompetition() },
+            { x: 3, y: 2, r: getRandomRevenue() / 1000, label: 'Physicians', competition: getRandomCompetition() }
+          ],
+          backgroundColor: function(context) {
+            return getCompetitionColor(context.raw.competition);
+          }
+        }
+      ]
+    };
+
+    const options = {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(tooltipItem) {
+              return `${tooltipItem.raw.label}: Revenue $${tooltipItem.raw.r * 1000}, Competition Level ${tooltipItem.raw.competition}`;
+            }
+          }
+        },
+        legend: {
+          display: true
+        }
+      },
+      scales: {
+        x: {
+          min: 0,
+          max: 10,
+          title: {
+            display: true,
+            text: 'Business Segments'
+          },
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              const segments = [
+                'Professionals',
+                'SMB/Location Based',
+                'Healthcare - Preventive & Wellness Care',
+                'Healthcare - Acute & Emergency Care',
+                'Healthcare - Pharmaceuticals & Lifesciences',
+                'Education - Schools & Colleges',
+                'Education - Edtech/Tutors',
+                'Financial Services - Lenders',
+                'Financial Services - Insurance',
+                'Others'
+              ];
+              return segments[value - 1] || '';
+            }
+          }
+        },
+        y: {
+          min: 0,
+          max: 4,
+          title: {
+            display: true,
+            text: 'Business Scope'
+          },
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              const scopes = ['Solo/Independent', 'SME (Regional & Multi-City)', 'Large Enterprises (National & International)'];
+              return scopes[value - 1] || '';
+            }
+          }
+        }
+      }
+    };
+
+    const bubbleChart = new Chart(ctx, {
+      type: 'bubble',
+      data: data,
+      options: options
+    });
+  </script>
+</body>
+</html>

@@ -12,10 +12,13 @@
   <canvas id="bubbleChart" width="800" height="600"></canvas>
 
   <script>
-    function getRightToWinColor(score) {
-      if (score < 7.5) return 'rgba(255, 0, 0, 0.5)';  // Red for low score
-      if (score < 8.5) return 'rgba(255, 165, 0, 0.5)';  // Orange for medium score
-      return 'rgba(0, 255, 0, 0.5)';  // Green for high score
+    function getCompetitionColor(level) {
+      switch (level) {
+        case 1: return 'rgba(255, 255, 0, 0.5)';  // Yellow for low competition
+        case 2: return 'rgba(255, 165, 0, 0.5)';  // Orange for medium competition
+        case 3: return 'rgba(255, 0, 0, 0.5)';    // Red for high competition
+        default: return 'rgba(255, 99, 132, 0.5)';
+      }
     }
 
     const ctx = document.getElementById('bubbleChart').getContext('2d');
@@ -25,45 +28,90 @@
         {
           label: 'Professionals',
           data: [
-            { x: 1, y: 1, r: 3500 / 100, label: 'Lawyers (Solo)', rightToWin: 8.97 },
-            { x: 1, y: 2, r: 2250 / 100, label: 'Lawyers (Regional)', rightToWin: 8.52 },
-            { x: 1, y: 3, r: 75000 / 100, label: 'Lawyers (National)', rightToWin: 8.7 },
-            { x: 1, y: 1, r: 3500 / 100, label: 'Real Estate Agents (Solo)', rightToWin: 7.34 },
-            { x: 1, y: 2, r: 2700 / 100, label: 'Real Estate Agencies (Regional)', rightToWin: 7.79 },
-            { x: 1, y: 3, r: 2100 / 100, label: 'Real Estate Franchises (National)', rightToWin: 9.17 },
-            { x: 1, y: 1, r: 3500 / 100, label: 'Financial Advisors (Solo)', rightToWin: 8.27 },
-            { x: 1, y: 2, r: 5250 / 100, label: 'Financial Advisory Firms (Regional)', rightToWin: 7.07 },
-            { x: 1, y: 3, r: 27000 / 100, label: 'Financial Advisory Firms (National)', rightToWin: 8.27 }
+            { x: 1, y: 1, r: 3500 / 100, label: 'Lawyers (Solo)', competition: 2 },
+            { x: 1, y: 2, r: 2250 / 100, label: 'Lawyers (Regional)', competition: 2 },
+            { x: 1, y: 3, r: 75000 / 100, label: 'Lawyers (National)', competition: 3 },
+            { x: 1, y: 1, r: 3500 / 100, label: 'Real Estate Agents (Solo)', competition: 2 },
+            { x: 1, y: 2, r: 2700 / 100, label: 'Real Estate Agencies (Regional)', competition: 2 },
+            { x: 1, y: 3, r: 2100 / 100, label: 'Real Estate Franchises (National)', competition: 3 },
+            { x: 1, y: 1, r: 3500 / 100, label: 'Financial Advisors (Solo)', competition: 2 },
+            { x: 1, y: 2, r: 5250 / 100, label: 'Financial Advisory Firms (Regional)', competition: 2 },
+            { x: 1, y: 3, r: 27000 / 100, label: 'Financial Advisory Firms (National)', competition: 3 }
           ],
           backgroundColor: function(context) {
-            return getRightToWinColor(context.raw.rightToWin);
+            return getCompetitionColor(context.raw.competition);
           }
         },
         {
           label: 'Healthcare',
           data: [
-            { x: 3, y: 1, r: 3500 / 100, label: 'Dental Private Practice', rightToWin: 7.62 },
-            { x: 3, y: 2, r: 27000 / 100, label: 'Regional Dental Groups', rightToWin: 8.0 },
-            { x: 3, y: 3, r: 90000 / 100, label: 'National Dental Chains', rightToWin: 7.82 },
-            { x: 3, y: 1, r: 3500 / 100, label: 'Solo Medical Practices', rightToWin: 7.62 },
-            { x: 3, y: 2, r: 22500 / 100, label: 'Regional Medical Groups', rightToWin: 8.9 },
-            { x: 3, y: 3, r: 7500 / 100, label: 'National Healthcare Systems', rightToWin: 8.0 }
+            { x: 3, y: 1, r: 3500 / 100, label: 'Dental Private Practice', competition: 2 },
+            { x: 3, y: 2, r: 27000 / 100, label: 'Regional Dental Groups', competition: 2 },
+            { x: 3, y: 3, r: 90000 / 100, label: 'National Dental Chains', competition: 3 },
+            { x: 3, y: 1, r: 3500 / 100, label: 'Solo Medical Practices', competition: 2 },
+            { x: 3, y: 2, r: 22500 / 100, label: 'Regional Medical Groups', competition: 3 },
+            { x: 3, y: 3, r: 7500 / 100, label: 'National Healthcare Systems', competition: 2 }
           ],
           backgroundColor: function(context) {
-            return getRightToWinColor(context.raw.rightToWin);
+            return getCompetitionColor(context.raw.competition);
+          }
+        },
+        {
+          label: 'SMB/Location Based',
+          data: [
+            { x: 2, y: 1, r: 3500 / 100, label: 'Small Boutique Shops', competition: 2 },
+            { x: 2, y: 2, r: 9000 / 100, label: 'Local Chain Stores', competition: 2 },
+            { x: 2, y: 3, r: 9000 / 100, label: 'National Retail Chains', competition: 2 },
+            { x: 2, y: 1, r: 3500 / 100, label: 'Independent Contractors', competition: 2 },
+            { x: 2, y: 2, r: 1800 / 100, label: 'Local Service Companies', competition: 2 },
+            { x: 2, y: 3, r: 4500 / 100, label: 'National Home Service Franchises', competition: 2 }
+          ],
+          backgroundColor: function(context) {
+            return getCompetitionColor(context.raw.competition);
+          }
+        },
+        {
+          label: 'Education',
+          data: [
+            { x: 6, y: 1, r: 3500 / 100, label: 'Public Universities (Solo)', competition: 3 },
+            { x: 6, y: 2, r: 60000 / 100, label: 'Public Universities (Regional)', competition: 2 },
+            { x: 6, y: 3, r: 60000 / 100, label: 'Public Universities (National)', competition: 3 },
+            { x: 7, y: 1, r: 3500 / 100, label: 'Online Tutors', competition: 2 },
+            { x: 7, y: 2, r: 2700 / 100, label: 'Online Education (Regional)', competition: 2 },
+            { x: 7, y: 3, r: 9000 / 100, label: 'Online Education (National)', competition: 2 }
+          ],
+          backgroundColor: function(context) {
+            return getCompetitionColor(context.raw.competition);
           }
         },
         {
           label: 'Financial Services',
           data: [
-            { x: 8, y: 2, r: 90000 / 100, label: 'Community Banks', rightToWin: 8.9 },
-            { x: 8, y: 3, r: 900000 / 100, label: 'National Banks', rightToWin: 8.72 },
-            { x: 8, y: 1, r: 3500 / 100, label: 'Mortgage Brokers (Solo)', rightToWin: 8.72 },
-            { x: 8, y: 2, r: 2700 / 100, label: 'Mortgage Brokers (Regional)', rightToWin: 8.97 },
-            { x: 8, y: 3, r: 10500 / 100, label: 'Mortgage Brokers (National)', rightToWin: 9.15 }
+            { x: 8, y: 2, r: 90000 / 100, label: 'Community Banks', competition: 3 },
+            { x: 8, y: 3, r: 900000 / 100, label: 'National Banks', competition: 3 },
+            { x: 8, y: 1, r: 3500 / 100, label: 'Mortgage Brokers (Solo)', competition: 3 },
+            { x: 8, y: 2, r: 2700 / 100, label: 'Mortgage Brokers (Regional)', competition: 3 },
+            { x: 8, y: 3, r: 10500 / 100, label: 'Mortgage Brokers (National)', competition: 3 },
+            { x: 9, y: 1, r: 3500 / 100, label: 'Independent Insurance Brokers', competition: 2 },
+            { x: 9, y: 2, r: 45000 / 100, label: 'Regional Insurance Companies', competition: 2 },
+            { x: 9, y: 3, r: 90000 / 100, label: 'National Insurance Companies', competition: 2 }
           ],
           backgroundColor: function(context) {
-            return getRightToWinColor(context.raw.rightToWin);
+            return getCompetitionColor(context.raw.competition);
+          }
+        },
+        {
+          label: 'Others',
+          data: [
+            { x: 10, y: 1, r: 3500 / 100, label: 'Independent Online Sellers', competition: 2 },
+            { x: 10, y: 2, r: 9000 / 100, label: 'Regional Online Retailers', competition: 2 },
+            { x: 10, y: 3, r: 18000 / 100, label: 'E-Commerce stores (National)', competition: 2 },
+            { x: 10, y: 1, r: 3500 / 100, label: 'Small Manufacturing Firms', competition: 2 },
+            { x: 10, y: 2, r: 7500 / 100, label: 'Regional Manufacturing Firms', competition: 3 },
+            { x: 10, y: 3, r: 60000 / 100, label: 'National Manufacturing Companies', competition: 3 }
+          ],
+          backgroundColor: function(context) {
+            return getCompetitionColor(context.raw.competition);
           }
         }
       ]
@@ -75,7 +123,7 @@
         tooltip: {
           callbacks: {
             label: function(tooltipItem) {
-              return `${tooltipItem.raw.label}: Revenue $${tooltipItem.raw.r * 100}, Right to Win Score ${tooltipItem.raw.rightToWin.toFixed(2)}`;
+              return `${tooltipItem.raw.label}: Revenue $${tooltipItem.raw.r * 100}, Competition Level ${tooltipItem.raw.competition}`;
             }
           }
         },
@@ -86,7 +134,7 @@
       scales: {
         x: {
           min: 0,
-          max: 10,
+          max: 11,
           title: {
             display: true,
             text: 'Business Segments'
@@ -112,7 +160,7 @@
         },
         y: {
           min: 0,
-          max: 4,
+          max: 3,
           title: {
             display: true,
             text: 'Business Scope'
@@ -120,7 +168,11 @@
           ticks: {
             stepSize: 1,
             callback: function(value) {
-              const scopes = ['Solo/Independent', 'SME (Regional & Multi-City)', 'Large Enterprises (National & International)'];
+              const scopes = [
+                'Solo/Independent',
+                'SME (Regional & Multi-City)',
+                'Large Enterprises (National & International)'
+              ];
               return scopes[value - 1] || '';
             }
           }

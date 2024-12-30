@@ -12,24 +12,10 @@
   <canvas id="bubbleChart" width="800" height="600"></canvas>
 
   <script>
-    // Function to generate random values for the bubbles
-    function getRandomRevenue() {
-      return Math.floor(Math.random() * 100000) + 10000; // Random revenue between $10,000 and $100,000
-    }
-
-    // Function to generate random competition intensity (1 = Low, 2 = Medium, 3 = High)
-    function getRandomCompetition() {
-      return Math.floor(Math.random() * 3) + 1; // Random value between 1 and 3
-    }
-
-    // Function to map competition level to color
-    function getCompetitionColor(level) {
-      switch (level) {
-        case 1: return 'rgba(255, 255, 0, 0.5)';  // Yellow for low competition
-        case 2: return 'rgba(255, 165, 0, 0.5)';  // Orange for medium competition
-        case 3: return 'rgba(255, 0, 0, 0.5)';    // Red for high competition
-        default: return 'rgba(255, 99, 132, 0.5)';
-      }
+    function getRightToWinColor(score) {
+      if (score < 7.5) return 'rgba(255, 0, 0, 0.5)';  // Red for low score
+      if (score < 8.5) return 'rgba(255, 165, 0, 0.5)';  // Orange for medium score
+      return 'rgba(0, 255, 0, 0.5)';  // Green for high score
     }
 
     const ctx = document.getElementById('bubbleChart').getContext('2d');
@@ -39,22 +25,45 @@
         {
           label: 'Professionals',
           data: [
-            { x: 1, y: 1, r: getRandomRevenue() / 1000, label: 'Mortgage Brokers', competition: getRandomCompetition() },
-            { x: 1, y: 2, r: getRandomRevenue() / 1000, label: 'Lawyers', competition: getRandomCompetition() },
-            { x: 1, y: 3, r: getRandomRevenue() / 1000, label: 'Financial Advisors', competition: getRandomCompetition() }
+            { x: 1, y: 1, r: 3500 / 100, label: 'Lawyers (Solo)', rightToWin: 8.97 },
+            { x: 1, y: 2, r: 2250 / 100, label: 'Lawyers (Regional)', rightToWin: 8.52 },
+            { x: 1, y: 3, r: 75000 / 100, label: 'Lawyers (National)', rightToWin: 8.7 },
+            { x: 1, y: 1, r: 3500 / 100, label: 'Real Estate Agents (Solo)', rightToWin: 7.34 },
+            { x: 1, y: 2, r: 2700 / 100, label: 'Real Estate Agencies (Regional)', rightToWin: 7.79 },
+            { x: 1, y: 3, r: 2100 / 100, label: 'Real Estate Franchises (National)', rightToWin: 9.17 },
+            { x: 1, y: 1, r: 3500 / 100, label: 'Financial Advisors (Solo)', rightToWin: 8.27 },
+            { x: 1, y: 2, r: 5250 / 100, label: 'Financial Advisory Firms (Regional)', rightToWin: 7.07 },
+            { x: 1, y: 3, r: 27000 / 100, label: 'Financial Advisory Firms (National)', rightToWin: 8.27 }
           ],
           backgroundColor: function(context) {
-            return getCompetitionColor(context.raw.competition);
+            return getRightToWinColor(context.raw.rightToWin);
           }
         },
         {
           label: 'Healthcare',
           data: [
-            { x: 3, y: 1, r: getRandomRevenue() / 1000, label: 'Dental Clinics', competition: getRandomCompetition() },
-            { x: 3, y: 2, r: getRandomRevenue() / 1000, label: 'Physicians', competition: getRandomCompetition() }
+            { x: 3, y: 1, r: 3500 / 100, label: 'Dental Private Practice', rightToWin: 7.62 },
+            { x: 3, y: 2, r: 27000 / 100, label: 'Regional Dental Groups', rightToWin: 8.0 },
+            { x: 3, y: 3, r: 90000 / 100, label: 'National Dental Chains', rightToWin: 7.82 },
+            { x: 3, y: 1, r: 3500 / 100, label: 'Solo Medical Practices', rightToWin: 7.62 },
+            { x: 3, y: 2, r: 22500 / 100, label: 'Regional Medical Groups', rightToWin: 8.9 },
+            { x: 3, y: 3, r: 7500 / 100, label: 'National Healthcare Systems', rightToWin: 8.0 }
           ],
           backgroundColor: function(context) {
-            return getCompetitionColor(context.raw.competition);
+            return getRightToWinColor(context.raw.rightToWin);
+          }
+        },
+        {
+          label: 'Financial Services',
+          data: [
+            { x: 8, y: 2, r: 90000 / 100, label: 'Community Banks', rightToWin: 8.9 },
+            { x: 8, y: 3, r: 900000 / 100, label: 'National Banks', rightToWin: 8.72 },
+            { x: 8, y: 1, r: 3500 / 100, label: 'Mortgage Brokers (Solo)', rightToWin: 8.72 },
+            { x: 8, y: 2, r: 2700 / 100, label: 'Mortgage Brokers (Regional)', rightToWin: 8.97 },
+            { x: 8, y: 3, r: 10500 / 100, label: 'Mortgage Brokers (National)', rightToWin: 9.15 }
+          ],
+          backgroundColor: function(context) {
+            return getRightToWinColor(context.raw.rightToWin);
           }
         }
       ]
@@ -66,7 +75,7 @@
         tooltip: {
           callbacks: {
             label: function(tooltipItem) {
-              return `${tooltipItem.raw.label}: Revenue $${tooltipItem.raw.r * 1000}, Competition Level ${tooltipItem.raw.competition}`;
+              return `${tooltipItem.raw.label}: Revenue $${tooltipItem.raw.r * 100}, Right to Win Score ${tooltipItem.raw.rightToWin.toFixed(2)}`;
             }
           }
         },
